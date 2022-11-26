@@ -1,0 +1,54 @@
+#!/bin/bash
+declare -A matrix
+ROWS = 4
+COLS = 4
+initializaMatrix() {
+    for ((i = 1; i <= ROWS; i++)) do
+    for ((j = 1; j <= COLS; j++)) do
+        matrix[$i,$j]=$((-100 + $RANDOM % 200))
+    done
+       done
+}
+printMatrix() {
+    for ((j=1;j<=COLS;j++)) do
+    for ((i=1;i<=ROWS;i++)) do
+        printf "%d      " ${matrix[$i,$j]} 
+    done
+    echo
+    done
+}
+findAndSwap() {
+    el_min=101
+    mi=0
+    mj=0
+    el_max=-101
+    Mi=0
+    Mj=0
+    temp=0
+    for ((i = 0; i < ROWS; i++)) do
+        for ((j = 0; j < COLS; j++)) do
+            if [[ $el_min -gt ${matrix[$i,$j]} ]]; then
+                el_min=${matrix[$i,$j]}
+                mi=$i
+                mj=$j
+            fi
+            if [[ $el_max -lt ${matrix[$i,$j]} ]]; then
+                el_max=${matrix[$i,$j]}
+                Mi=$i
+                Mj=$j
+            fi
+        done
+    done
+    printf "\nElem min=%d\n" $el_min
+    printf "Elem max=%d\n" $el_max
+    printf "%d %d\n" $mi $mj
+   printf "%d %d\n\n" $Mi $Mj
+    temp=${matrix[$mi,$mj]}
+    matrix[$mi,$mj]=${matrix[$Mi,$Mj]}
+    matrix[$Mi,$Mj]=$temp
+}
+initializaMatrix 
+echo "La matrice donnee est:"
+printMatrix 
+findAndSwap
+printMatrix
